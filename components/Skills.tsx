@@ -1,109 +1,115 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import Reveal from "./Reveal";
+import SectionHeading from "./SectionHeading";
+
+function Signal({ active }: { active: boolean }) {
+  const bars = active ? 4 : 2;
+  return (
+    <span
+      className={`sig ${active ? "text-green" : "text-amber"}`}
+      aria-hidden="true"
+    >
+      {[0, 1, 2, 3].map((n) => (
+        <i key={n} className={n < bars ? "on" : ""} />
+      ))}
+    </span>
+  );
+}
 
 const skillGroups = [
   {
-    category: "Cloud",
+    category: "Observability & Visualization",
     items: [
-      { name: "AWS", status: "active" },
-      { name: "GCP", status: "active" },
-      { name: "Azure", status: "standby" },
-    ],
-  },
-  {
-    category: "Containers",
-    items: [
-      { name: "Docker", status: "active" },
-      { name: "Kubernetes", status: "active" },
-      { name: "Helm", status: "active" },
-    ],
-  },
-  {
-    category: "IaC",
-    items: [
-      { name: "Terraform", status: "active" },
-      { name: "Ansible", status: "active" },
-      { name: "Pulumi", status: "standby" },
-    ],
-  },
-  {
-    category: "CI/CD",
-    items: [
-      { name: "GitHub Actions", status: "active" },
-      { name: "Jenkins", status: "active" },
-      { name: "ArgoCD", status: "active" },
-    ],
-  },
-  {
-    category: "Monitoring",
-    items: [
-      { name: "Prometheus", status: "active" },
       { name: "Grafana", status: "active" },
-      { name: "Datadog", status: "standby" },
+      { name: "Plutono", status: "active" },
+      { name: "VictoriaMetrics", status: "active" },
+      { name: "Prometheus", status: "active" },
+      { name: "Geomaps / Time Series", status: "active" },
+    ],
+  },
+  {
+    category: "Databases & Storage",
+    items: [
+      { name: "PostgreSQL", status: "active" },
+      { name: "TimescaleDB", status: "active" },
+      { name: "MongoDB", status: "active" },
+      { name: "Redis", status: "standby" },
+      { name: "MySQL", status: "standby" },
+    ],
+  },
+  {
+    category: "Data Engineering & IoT",
+    items: [
+      { name: "Real-Time Telemetry Ingestion", status: "active" },
+      { name: "MTConnect (CNC)", status: "active" },
+      { name: "FastAPI", status: "active" },
+      { name: "Node.js / Express", status: "active" },
+      { name: "QGIS (Spatial Vectors)", status: "standby" },
+    ],
+  },
+  {
+    category: "AI & Machine Learning",
+    items: [
+      { name: "RAG Pipeline Optimization", status: "active" },
+      { name: "LLMs / GPT-4", status: "active" },
+      { name: "Anomaly Detection", status: "active" },
+      { name: "NLP", status: "standby" },
+    ],
+  },
+  {
+    category: "DevOps & Infrastructure",
+    items: [
+      { name: "Docker (Multi-Stage)", status: "active" },
+      { name: "Git / GitHub", status: "active" },
+      { name: "CI/CD Workflows", status: "active" },
+      { name: "Linux System Admin", status: "active" },
     ],
   },
   {
     category: "Languages",
     items: [
       { name: "Python", status: "active" },
-      { name: "Go", status: "active" },
-      { name: "Bash", status: "active" },
+      { name: "SQL / PromQL", status: "active" },
+      { name: "C", status: "standby" },
+      { name: "Java (Core)", status: "standby" },
+      { name: "JavaScript", status: "standby" },
     ],
   },
 ];
 
 export default function Skills() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <section id="skills" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto" ref={ref}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <p className="font-mono text-text-muted text-sm mb-2">
-            $ kubectl get services
-          </p>
-          <h2 className="text-3xl font-bold">Infrastructure Stack</h2>
-        </motion.div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <section id="skills" className="scroll-mt-20 px-5 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-6xl">
+        <SectionHeading
+          command="promtool query instant 'up'"
+          title="Infrastructure Stack"
+        />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {skillGroups.map((group, i) => (
-            <motion.div
+            <Reveal
               key={group.category}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.08 * i }}
+              delay={0.06 * i}
               className="terminal-border p-5"
             >
-              <p className="font-mono text-xs text-text-muted uppercase tracking-wider mb-4">
+              <p className="mb-4 font-mono text-xs uppercase tracking-wider text-text-muted">
                 {group.category}
               </p>
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {group.items.map((item) => (
-                  <div key={item.name} className="flex items-center justify-between font-mono text-sm">
-                    <span>{item.name}</span>
-                    <span className="flex items-center gap-2">
-                      <span
-                        className={`status-dot ${
-                          item.status === "active" ? "bg-green" : "bg-amber"
-                        }`}
-                      />
-                      <span className={`text-xs ${
-                        item.status === "active" ? "text-green" : "text-amber"
-                      }`}>
-                        {item.status}
-                      </span>
+                  <div
+                    key={item.name}
+                    className="flex items-center justify-between gap-3 font-mono text-sm"
+                  >
+                    <span className="text-text-muted transition-colors group-hover:text-text">
+                      {item.name}
                     </span>
+                    <Signal active={item.status === "active"} />
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>

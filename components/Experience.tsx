@@ -1,77 +1,75 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import Reveal from "./Reveal";
+import SectionHeading from "./SectionHeading";
 
 const experience = [
   {
     hash: "a3f8c1d",
-    role: "Senior DevOps Engineer",
-    company: "Company Name",
-    period: "2023 - Present",
-    description: "Leading cloud infrastructure strategy. Managing 200+ microservices across multi-region Kubernetes clusters.",
+    role: "Research Intern — Data & Observability Engineering",
+    company: "IIT Bombay (Machine Intelligence Group / NCAIR)",
+    period: "Jun 2025 - Present",
+    description:
+      "Architected production-grade real-time telemetry dashboards on Plutono & Grafana for Tier-1 industrial enterprises (Hitachi, BKT Tires, CST, Boldrocchi, Mitsuba). Built a campus-wide VictoriaMetrics + Grafana observability stack, automated PostgreSQL ingestion/cleaning pipelines, containerized MTConnect CNC ingestion engines in Docker with low-level C, and optimized TimescaleDB time-series queries. Eliminated bottlenecks in internal RAG pipelines to improve retrieval latency and accuracy.",
   },
   {
     hash: "b7e2f09",
-    role: "DevOps Engineer",
-    company: "Company Name",
-    period: "2021 - 2023",
-    description: "Built CI/CD pipelines and automated infrastructure provisioning. Achieved 99.95% uptime SLA.",
+    role: "Data Analyst Intern",
+    company: "Genesys International Corporation Ltd.",
+    period: "Dec 2024 - Apr 2025",
+    description:
+      "Built high-throughput RESTful spatial ingestion APIs in FastAPI for a live Crime Analytics Dashboard. Wrote complex PromQL/SQL over high-density geological datasets across Maharashtra & Karnataka, established centralized Prometheus + PostgreSQL + Grafana health dashboards, and handled QGIS spatial cleaning and vector transformations.",
   },
   {
     hash: "c4d9a52",
-    role: "Systems Administrator",
-    company: "Company Name",
-    period: "2019 - 2021",
-    description: "Managed on-premise and cloud infrastructure. Led migration from bare metal to containerized workloads.",
+    role: "B.E. Information Technology",
+    company: "A. P. Shah Institute of Technology (APSIT)",
+    period: "2022 - 2026",
+    description:
+      "Core specialization in Data Science, Machine Learning, Data Engineering, Cloud Systems & Systems Observability. AWS Academy Data Analyst & Core Java certified; Silver Medalist — Technical Poster Presentation.",
   },
 ];
 
 export default function Experience() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <section id="experience" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto" ref={ref}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <p className="font-mono text-text-muted text-sm mb-2">
-            $ git log --oneline
-          </p>
-          <h2 className="text-3xl font-bold">Deployment History</h2>
-        </motion.div>
-        <div className="space-y-6">
+    <section
+      id="experience"
+      className="scroll-mt-20 px-5 py-16 sm:px-6 sm:py-24"
+    >
+      <div className="mx-auto max-w-6xl">
+        <SectionHeading
+          command="git log --oneline --graph"
+          title="Deployment History"
+        />
+        <div className="relative space-y-6 pl-8">
+          <span className="git-rail" aria-hidden="true" />
           {experience.map((job, i) => (
-            <motion.div
+            <Reveal
               key={job.hash}
-              initial={{ opacity: 0, x: -20 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.15 * i }}
+              delay={0.08 * i}
               className="terminal-border p-6"
             >
-              <div className="flex items-start gap-4">
-                <span className="font-mono text-amber text-sm mt-1 shrink-0">
+              <span className="git-node" aria-hidden="true" />
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                <span className="mt-0.5 shrink-0 font-mono text-sm text-amber">
                   {job.hash}
                 </span>
                 <div>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
+                  <div className="mb-1 flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
                     <h3 className="font-semibold text-cyan">{job.role}</h3>
-                    <span className="text-text-muted text-sm">at {job.company}</span>
+                    <span className="text-sm text-text-muted">
+                      at {job.company}
+                    </span>
                   </div>
-                  <p className="font-mono text-xs text-text-muted mb-2">
+                  <p className="mb-2 font-mono text-xs text-text-muted">
                     {job.period}
                   </p>
-                  <p className="text-text-muted text-sm leading-relaxed">
+                  <p className="text-sm leading-relaxed text-text-muted">
                     {job.description}
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>

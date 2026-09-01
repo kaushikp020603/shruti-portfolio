@@ -1,107 +1,79 @@
-# DevOps Portfolio
+# Shruti Mandavkar — Portfolio
 
-A dashboard-style Next.js portfolio template for DevOps engineers, SREs, and infrastructure engineers. System monitor aesthetic with status indicators, animated metrics, git-log-style timelines, and terminal UI elements. Built with Next.js 15, TypeScript, Tailwind CSS, and Framer Motion.
+Personal portfolio for a **Data & Observability Engineer**. Dashboard / system‑monitor
+aesthetic with a matrix‑rain hero, animated metrics, a git‑log experience timeline,
+signal‑strength skill meters, and terminal UI throughout.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Terminal-Blank/devops-portfolio)
+Built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS 4**, and
+**Framer Motion**.
 
-## Features
-
-- **Dashboard Aesthetic** -- Grafana-inspired layout with metric cards and status indicators
-- **Animated Counters** -- Numbers count up on scroll for projects deployed, uptime, and more
-- **Terminal UI** -- Monospace typography, command prompts, and system-style navigation
-- **Git Log Timeline** -- Experience section styled like commit history with hashes
-- **Status Indicators** -- Pulsing dots showing active/standby states for skills
-- **CI/CD Project Cards** -- Deployment-style cards with status badges and timestamps
-- **Dot Grid Background** -- Subtle engineering-themed background pattern
-- **Fully Responsive** -- Works on all screen sizes
-- **SEO Optimized** -- Metadata and Open Graph tags
-
-## Sections
-
-1. **Hero** -- System status header with hostname, role, and live uptime counter
-2. **Metrics** -- Dashboard cards with animated counters
-3. **Skills** -- Infrastructure stack with status indicators per technology
-4. **Projects** -- CI/CD pipeline-style deployment cards
-5. **Experience** -- Git log timeline with commit hashes
-6. **Contact** -- SSH-style terminal contact section
-
-## Quick Start
+## Local development
 
 ```bash
-git clone https://github.com/Terminal-Blank/devops-portfolio.git my-portfolio
-cd my-portfolio
 npm install
 npm run dev
 ```
 
-Open http://localhost:3000 to see your site.
+Open http://localhost:3000.
 
-## Customization
+```bash
+npm run build   # production build
+npm run start   # serve the production build locally
+npm run lint    # eslint / type-aware checks
+```
 
-### Personal Info
+## Deploy to Vercel
 
-Edit `components/Hero.tsx` to update your name, role, and bio.
+This is a zero‑config Next.js app — Vercel detects the framework, build command
+(`next build`), and output automatically.
 
-### Metrics
+### Option A — GitHub + Vercel dashboard (recommended)
 
-Update the `metrics` array in `components/Metrics.tsx` with your numbers.
+1. Create a new **empty** repo on your GitHub account.
+2. Point this project at it and push:
+   ```bash
+   git remote add origin https://github.com/<you>/<repo>.git
+   git push -u origin main
+   ```
+3. Go to [vercel.com/new](https://vercel.com/new), import the repo, and click
+   **Deploy**. No environment variables are required.
 
-### Skills
-
-Edit `skillGroups` in `components/Skills.tsx` to list your technologies and their status.
-
-### Projects
-
-Update the `projects` array in `components/Projects.tsx` with your deployments.
-
-### Experience
-
-Edit the `experience` array in `components/Experience.tsx` with your work history.
-
-### Contact
-
-Update links in `components/Contact.tsx`.
-
-### Colors
-
-Modify the status colors and theme in `app/globals.css`.
-
-## Deployment
-
-### Vercel (Recommended)
-
-Click the "Deploy with Vercel" button above, or:
+### Option B — Vercel CLI
 
 ```bash
 npm i -g vercel
-vercel
+vercel        # preview deploy
+vercel --prod # production deploy
 ```
 
-### Docker
+### After the first deploy
 
-```dockerfile
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY . .
-RUN npm ci && npm run build
+Set the canonical site URL so Open Graph / canonical tags and `sitemap.xml`
+use your real domain. In **Vercel → Project → Settings → Environment Variables**:
 
-FROM node:20-alpine AS runner
-WORKDIR /app
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./
-RUN npm ci --production
-CMD ["npm", "start"]
-```
+| Name                  | Value                          | Environments |
+| --------------------- | ------------------------------ | ------------ |
+| `NEXT_PUBLIC_SITE_URL` | `https://your-domain.com`      | Production   |
 
-## Tech Stack
+If unset, the app falls back to the Vercel deployment URL, then `localhost`.
 
-- [Next.js 15](https://nextjs.org/) -- React framework
-- [TypeScript](https://www.typescriptlang.org/) -- Type safety
-- [Tailwind CSS 4](https://tailwindcss.com/) -- Styling
-- [Framer Motion](https://www.framer.com/motion/) -- Animations
-- [JetBrains Mono](https://www.jetbrains.com/lp/mono/) -- Monospace font
+## Editing content
+
+All content lives in plain arrays inside the components — no CMS.
+
+| What | Where |
+| --- | --- |
+| Name, role, bio, links | `components/Hero.tsx` |
+| Stat counters | `components/Metrics.tsx` |
+| Skills + status | `components/Skills.tsx` |
+| Projects | `components/Projects.tsx` |
+| Experience timeline | `components/Experience.tsx` |
+| Certifications & awards | `components/Certifications.tsx` |
+| Contact links | `components/Contact.tsx` |
+| Résumé PDF | `public/Shruti_Mandavkar_Resume.pdf` |
+| Colours / theme tokens | `app/globals.css` (`@theme`) |
+| Site metadata / SEO | `app/layout.tsx` |
 
 ## License
 
-MIT -- [Terminal Blank](https://terminalblank.com)
+MIT. Template originally by [Terminal Blank](https://terminalblank.com).
